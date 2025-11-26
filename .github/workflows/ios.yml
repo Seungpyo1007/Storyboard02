@@ -15,14 +15,11 @@ jobs:
     # 1. Checkout the repository code (using v4, the latest version)
     - uses: actions/checkout@v4
       
-    # 2. Select a specific Xcode version (Recommended practice)
-    # macOS runners usually have multiple versions installed. 
-    # Specifying the version ensures consistency.
-    # ⚠️ 수정: GitHub Actions Marketplace에서 사용 가능한 공식 경로로 수정했습니다.
-    - name: Select Xcode 15.3
-      uses: developer-actions/select-xcode@v1
-      with:
-        version: 15.3
+    # 2. Select a specific Xcode version using the built-in command (Most reliable method)
+    # The runner image guarantees multiple Xcode versions are pre-installed.
+    # ⚠️ 수정: 에러가 발생한 외부 액션 대신 xcode-select 명령어를 직접 사용합니다.
+    - name: Select Xcode 15.3 via xcode-select
+      run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
     
     # Optional: Verify the selected version (good for debugging)
     - name: Show active Xcode version
@@ -32,6 +29,7 @@ jobs:
     - name: Start xcode build and run tests 🛠
       run: |
         xcodebuild clean test \
+          # ⚠️ 수정: 프로젝트 이름과 스킴 이름을 'Storyboard02'로 변경했습니다.
           -project Storyboard02/Storyboard02.xcodeproj \
           -scheme Storyboard02 \
           -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=latest'
