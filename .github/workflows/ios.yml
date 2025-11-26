@@ -15,9 +15,16 @@ jobs:
     # 1. Checkout the repository code (using v4, the latest version)
     - uses: actions/checkout@v4
       
-    # 2. Select a specific Xcode version using the built-in command (Most reliable method)
-    # The runner image guarantees multiple Xcode versions are pre-installed.
+    # 2. Add step to list all installed Xcode applications
+    # 이 단계를 통해 러너에 설치된 Xcode의 정확한 파일명을 확인할 수 있습니다.
+    - name: List Installed Xcode Versions
+      run: ls -1 /Applications | grep "Xcode"
+
+    # 3. Select a specific Xcode version using the built-in command (Most reliable method)
     # ⚠️ 수정: 에러가 발생한 외부 액션 대신 xcode-select 명령어를 직접 사용합니다.
+    # 하지만 위 2번 단계 실행 후, 로그를 확인하여 /Applications/ 아래의 정확한 Xcode 파일명을 
+    # 찾아서 아래 명령어의 'Xcode_15.3.app' 부분을 수정해야 합니다. 
+    # 일단은 원본 경로를 유지하고, 다음 실행 로그에서 정확한 이름을 확인해주세요.
     - name: Select Xcode 15.3 via xcode-select
       run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
     
@@ -25,7 +32,7 @@ jobs:
     - name: Show active Xcode version
       run: xcodebuild -version
 
-    # 3. Run the Clean and Test command
+    # 4. Run the Clean and Test command
     - name: Start xcode build and run tests 🛠
       run: |
         xcodebuild clean test \
