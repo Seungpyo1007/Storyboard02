@@ -15,19 +15,24 @@ jobs:
     # 1. Checkout the repository code (using v4, the latest version)
     - uses: actions/checkout@v4
       
-    # 2. 수동으로 Xcode 버전을 선택하는 단계를 제거합니다.
-    #    이제 러너에 기본 설정된 최신 Xcode 버전(예: 15.x의 최신 버전)을 사용합니다.
-    
-    # 3. Optional: Verify the selected version (good for debugging)
+    # 2. Optional: Verify the selected version (good for debugging)
     #    어떤 Xcode 버전이 사용되는지 확인합니다.
     - name: Show active Xcode version
       run: xcodebuild -version
 
+    # 3. 디버깅을 위해 클론된 저장소의 파일 구조를 출력합니다.
+    #    이 로그를 통해 .xcodeproj 또는 .xcworkspace 파일의 정확한 위치를 파악할 수 있습니다.
+    #    이 단계의 로그를 통해 정확한 경로를 최종 확인할 수 있습니다.
+    - name: List Project Structure for Debugging
+      run: ls -R
+      
     # 4. Run the Clean and Test command
     - name: Start xcode build and run tests 🛠
       run: |
+        # 💡 수정: xcodebuild -list 명령 결과에 따라 .xcodeproj 파일이 리포지토리의
+        # 루트 경로에 직접 위치한다고 가정하고 경로를 수정했습니다.
+        # 스킴 이름은 'Storyboard02'로 확정되었습니다.
         xcodebuild clean test \
-          # 프로젝트 이름과 스킴 이름을 'Storyboard02'로 사용합니다.
-          -project Storyboard02/Storyboard02.xcodeproj \
+          -project Storyboard02.xcodeproj \
           -scheme Storyboard02 \
           -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=latest'
