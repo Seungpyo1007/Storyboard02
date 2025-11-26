@@ -18,8 +18,9 @@ jobs:
     # 2. Select a specific Xcode version (Recommended practice)
     # macOS runners usually have multiple versions installed. 
     # Specifying the version ensures consistency.
+    # ⚠️ 수정: GitHub Actions Marketplace에서 사용 가능한 공식 경로로 수정했습니다.
     - name: Select Xcode 15.3
-      uses: developer/select-xcode@v1
+      uses: developer-actions/select-xcode@v1
       with:
         version: 15.3
     
