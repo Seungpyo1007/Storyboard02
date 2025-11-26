@@ -1,0 +1,23 @@
+name: Run Test
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+    runs-on: macos-26.0.1
+
+    steps:
+    - name: List Xcode installations
+      run: sudo ls -1 /Applications | grep "Xcode"
+    - name: Select Xcode 26.0.1
+      run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
+    - uses: actions/checkout@v3
+    - name: Start xcode build 🛠
+      run: |
+        xcodebuild clean test -project RefactorMoti/RefactorMoti.xcodeproj \
+        -scheme RefactorMoti \
+        -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest'
