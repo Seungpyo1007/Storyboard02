@@ -8,27 +8,18 @@ on:
 
 jobs:
   test_ios:
-    # ⚠️ 수정: macos-latest로 오타 수정
+    # macos-latest 러너를 사용하며, 이 러너는 기본적으로 최신 Xcode를 사용합니다.
     runs-on: macos-latest
 
     steps:
     # 1. Checkout the repository code (using v4, the latest version)
     - uses: actions/checkout@v4
       
-    # 2. Add step to list all installed Xcode applications
-    # 이 단계를 통해 러너에 설치된 Xcode의 정확한 파일명을 확인할 수 있습니다.
-    - name: List Installed Xcode Versions
-      run: ls -1 /Applications | grep "Xcode"
-
-    # 3. Select a specific Xcode version using the built-in command (Most reliable method)
-    # ⚠️ 수정: 에러가 발생한 외부 액션 대신 xcode-select 명령어를 직접 사용합니다.
-    # 하지만 위 2번 단계 실행 후, 로그를 확인하여 /Applications/ 아래의 정확한 Xcode 파일명을 
-    # 찾아서 아래 명령어의 'Xcode_15.3.app' 부분을 수정해야 합니다. 
-    # 일단은 원본 경로를 유지하고, 다음 실행 로그에서 정확한 이름을 확인해주세요.
-    - name: Select Xcode 15.3 via xcode-select
-      run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
+    # 2. 수동으로 Xcode 버전을 선택하는 단계를 제거합니다.
+    #    이제 러너에 기본 설정된 최신 Xcode 버전(예: 15.x의 최신 버전)을 사용합니다.
     
-    # Optional: Verify the selected version (good for debugging)
+    # 3. Optional: Verify the selected version (good for debugging)
+    #    어떤 Xcode 버전이 사용되는지 확인합니다.
     - name: Show active Xcode version
       run: xcodebuild -version
 
@@ -36,7 +27,7 @@ jobs:
     - name: Start xcode build and run tests 🛠
       run: |
         xcodebuild clean test \
-          # ⚠️ 수정: 프로젝트 이름과 스킴 이름을 'Storyboard02'로 변경했습니다.
+          # 프로젝트 이름과 스킴 이름을 'Storyboard02'로 사용합니다.
           -project Storyboard02/Storyboard02.xcodeproj \
           -scheme Storyboard02 \
           -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=latest'
