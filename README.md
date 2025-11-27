@@ -24,3 +24,5 @@
 * TabBar Controller → Search ViewController
 
 * TabBar Controller → More ViewController
+
+<img width="296" height="640" alt="Image" src="https://github.com/user-attachments/assets/abf32f72-cb40-4a58-9851-b8e5364b8900" />
